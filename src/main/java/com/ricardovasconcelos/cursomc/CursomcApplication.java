@@ -9,27 +9,38 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.ricardovasconcelos.cursomc.domain.Categoria;
 import com.ricardovasconcelos.cursomc.domain.Cidade;
+import com.ricardovasconcelos.cursomc.domain.Cliente;
+import com.ricardovasconcelos.cursomc.domain.Endereco;
 import com.ricardovasconcelos.cursomc.domain.Estado;
 import com.ricardovasconcelos.cursomc.domain.Produto;
+import com.ricardovasconcelos.cursomc.domain.enums.TipoCliente;
 import com.ricardovasconcelos.cursomc.repositories.CategoriaRepository;
 import com.ricardovasconcelos.cursomc.repositories.CidadeRepository;
+import com.ricardovasconcelos.cursomc.repositories.ClienteRepository;
+import com.ricardovasconcelos.cursomc.repositories.EnderecoRepository;
 import com.ricardovasconcelos.cursomc.repositories.EstadoRepository;
 import com.ricardovasconcelos.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
+
 	@Autowired
 	private EstadoRepository estadoRepository;
-	
+
 	@Autowired
 	private CidadeRepository cidadeRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -37,37 +48,49 @@ public class CursomcApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Categoria categoria1 = new Categoria(null,  "Informática");
-		Categoria categoria2 = new Categoria(null,  "Escritório");
-		
+		Categoria categoria1 = new Categoria(null, "Informática");
+		Categoria categoria2 = new Categoria(null, "Escritório");
+
 		Produto produto1 = new Produto(null, "Computador", 2000.00);
 		Produto produto2 = new Produto(null, "Impressora", 800.00);
 		Produto produto3 = new Produto(null, "Mouse", 80.00);
-		
+
 		categoria1.getProdutos().addAll(Arrays.asList(produto1, produto2, produto3));
 		categoria2.getProdutos().addAll(Arrays.asList(produto2));
-		
+
 		produto1.getCategorias().addAll(Arrays.asList(categoria1));
 		produto2.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
 		produto3.getCategorias().addAll(Arrays.asList(categoria1));
-		
+
 		categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2));
-		
+
 		produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3));
-		
+
 		Estado estado1 = new Estado(null, "Minas Gerais");
 		Estado estado2 = new Estado(null, "São Paulo");
-		
+
 		Cidade cidade1 = new Cidade(null, "Uberlândia", estado1);
 		Cidade cidade2 = new Cidade(null, "São Paulo", estado2);
 		Cidade cidade3 = new Cidade(null, "Camponas", estado2);
-		
+
 		estado1.getCidades().addAll(Arrays.asList(cidade1));
 		estado2.getCidades().addAll(Arrays.asList(cidade2, cidade3));
-		
+
 		estadoRepository.saveAll(Arrays.asList(estado1, estado2));
-		
+
 		cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
+
+		Cliente cliente1 = new Cliente(null, "Maria Silva", "maria@gmail,com", "36378912377", TipoCliente.PESSOAFISICA);
+		cliente1.getTelefones().addAll(Arrays.asList("37363323", "93838939"));
+		
+		Endereco endereco1 = new Endereco(null, "Rua Flores", "300", "Apt 303", "Jardim", "38220834", cliente1, cidade1);
+		Endereco endereco2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cliente1, cidade2);
+		
+		cliente1.getEnderecos().addAll(Arrays.asList(endereco1, endereco2));
+		
+		clienteRepository.saveAll(Arrays.asList(cliente1));
+		
+		enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
 	}
 
 }
