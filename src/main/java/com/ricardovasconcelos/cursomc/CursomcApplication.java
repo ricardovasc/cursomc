@@ -13,6 +13,7 @@ import com.ricardovasconcelos.cursomc.domain.Cidade;
 import com.ricardovasconcelos.cursomc.domain.Cliente;
 import com.ricardovasconcelos.cursomc.domain.Endereco;
 import com.ricardovasconcelos.cursomc.domain.Estado;
+import com.ricardovasconcelos.cursomc.domain.ItemPedido;
 import com.ricardovasconcelos.cursomc.domain.Pagamento;
 import com.ricardovasconcelos.cursomc.domain.PagamentoComBoleto;
 import com.ricardovasconcelos.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.ricardovasconcelos.cursomc.repositories.CidadeRepository;
 import com.ricardovasconcelos.cursomc.repositories.ClienteRepository;
 import com.ricardovasconcelos.cursomc.repositories.EnderecoRepository;
 import com.ricardovasconcelos.cursomc.repositories.EstadoRepository;
+import com.ricardovasconcelos.cursomc.repositories.ItemPedidoRepository;
 import com.ricardovasconcelos.cursomc.repositories.PagamentoRepository;
 import com.ricardovasconcelos.cursomc.repositories.PedidoRepository;
 import com.ricardovasconcelos.cursomc.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class CursomcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -122,6 +127,24 @@ public class CursomcApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
 		
 		pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
+		
+		ItemPedido itemPedido1 = new ItemPedido(pedido1, produto1, 0.00, 1, 2000.00);
+		
+		ItemPedido itemPedido2 = new ItemPedido(pedido1, produto3, 0.00, 2, 80.00);
+		
+		ItemPedido itemPedido3 = new ItemPedido(pedido2, produto2, 100.00, 1, 800.00);
+		
+		pedido1.getItens().addAll(Arrays.asList(itemPedido1, itemPedido2));
+		
+		pedido2.getItens().addAll(Arrays.asList(itemPedido3));
+		
+		produto1.getItens().addAll(Arrays.asList(itemPedido1));
+		
+		produto2.getItens().addAll(Arrays.asList(itemPedido2));
+		
+		produto3.getItens().addAll(Arrays.asList(itemPedido3));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
 	}
 
 }
