@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ricardovasconcelos.cursomc.domain.Pedido;
 import com.ricardovasconcelos.cursomc.repositories.PedidoRepository;
-import com.ricardovasconcelos.cursomc.services.exception.ObjectNotFoundException;
+import com.ricardovasconcelos.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class PedidoService {
