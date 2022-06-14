@@ -10,5 +10,5 @@ import com.ricardovasconcelos.cursomc.domain.Cliente;
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
 	@Transactional
-	Cliente findbyEmail(String email);
+	Cliente findByEmail(String email);
 }
